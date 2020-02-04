@@ -4,6 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <style>
+            pre {outline: 1px solid #ccc; padding: 5px; margin: 5px; }
+        .string { color: green; }
+        .number { color: darkorange; }
+        .boolean { color: blue; }
+        .null { color: magenta; }
+        .key { color: red; }
+    </style>
     <title>Login</title>
 </head>
 <body>
@@ -19,14 +28,82 @@
             </label>
             <input type="submit" value="Login">
         </form>
-        <div id="doc"></div>
+        <button onclick="getPosts()">getPosts</button>
+        <button onclick="refreshToken()">refreshToken</button>
+        <pre id="doc"></pre>
     </div>
     <script>
         function getToken(e) {
-            alert()
             e.preventDefault();
-            let set = document.querySelector('#doc');
-            set.innerHTML = "hello";
+            let obj = getFormValues(e)
+
+            axios.post('/login', obj)
+                .then(res => {
+                    let set = select('#doc');
+                    set.innerHTML = syntaxHighlight(JSON.stringify(res, undefined, 6));
+                    axios.defaults.headers.common['Authorization'] = "Bearer " + res.data.accessToken;
+                })
+        }
+
+        function getPosts() {
+            axios.get('/posts')
+                .then(res => {
+                    let set = select('#doc');
+                    set.innerHTML = JSON.stringify(res.data);
+                }).catch( err => {
+                    let set = select('#doc');
+                    set.innerHTML = err;
+                })
+        }
+        function refreshToken() {
+            axios.get('/token')
+                .then( res => {
+                    let set = select('#doc');
+                    set.innerHTML = JSON.stringify(res.data);
+                    axios.defaults.headers.common['Authorization'] = "Bearer " + res.data.accessToken;
+                }).catch( err => {
+                    let set = select('#doc');
+                    set.innerHTML = err;
+                })
+        }
+
+
+
+
+
+
+
+        // json syntax highlight
+        function syntaxHighlight(json) {
+            json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+            return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
+                var cls = 'number';
+                if (/^"/.test(match)) {
+                    if (/:$/.test(match)) {
+                        cls = 'key';
+                    } else {
+                        cls = 'string';
+                    }
+                } else if (/true|false/.test(match)) {
+                    cls = 'boolean';
+                } else if (/null/.test(match)) {
+                    cls = 'null';
+                }
+                return '<span class="' + cls + '">' + match + '</span>';
+            });
+        }
+        // to select an element
+        function select(ele) {
+            return document.querySelector(ele);
+        }
+        // to get form values as key-value pair object
+        function getFormValues(e) {
+            let elements = e.target.elements;
+            let elementListObject = {};
+            for(element of elements) {
+                elementListObject[element.name] = element.value;
+            }
+            return elementListObject
         }
     </script>
 </body>

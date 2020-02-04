@@ -4,31 +4,22 @@ const express = require('express');
 const app = express();
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt');
+var cookieParser = require('cookie-parser');
+
+
+app.use(cookieParser());
 
 app.use(express.json());
 
 
-const posts = [
-    {
-        username: "vishwas",
-        title: "post1"
-    },
-    {
-        username: "ammy",
-        title: "post2"
-    }
-]
+const posts = []
 
 app.get('/posts', authenticateToken, (req, res) => {
-    res.json(posts.filter(post => post.username === req.user.name))
+    console.log(posts);
+    res.json(posts.filter(post => post.username === req.user.username))
 })
 
 let users = [];
-
-
-
-
-
 
 
 app.get('/login', (req, res) => {
@@ -70,13 +61,18 @@ app.post('/login', async (req, res) => {
         // Authenticate user
 
         const username = req.body.username;
-        const password = req.body.password;
-
-        const userData = { name: username }
+        const userData = { username: username }
         const accessToken = generateAccessToken(userData);
-        const refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN_SECRET);
+        const refreshToken = jwt.sign(userData, process.env.REFRESH_TOKEN_SECRET);
         refreshTokens.push(refreshToken);
-        res.json({accessToken: accessToken, refreshToken: refreshToken})
+        posts.push({username: req.body.username, post: Math.floor(Math.random() *100 + 1)})
+
+        const cookieOptions = {
+            httpOnly: true,
+            expires: 0 
+           }
+        res.cookie('JWTToken', refreshToken, cookieOptions)
+        res.json({accessToken: accessToken, refreshToken: refreshToken});
     } catch {
         res.sendStatus(500);
     }
@@ -93,6 +89,20 @@ app.post('/token', (req, res) => {
     jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
         if (err) return res.sendStatus(403);
         const accessToken = generateAccessToken({ name: user.name})
+        res.json({ accessToken: accessToken})
+    })
+})
+
+app.get('/token', (req, res) => {
+    // console.log(req.cookies.JWTToken)
+    // res.send(req.cookies.JWTToken);
+
+    const refreshToken = req.cookies.JWTToken
+    if (refreshToken == null) return res.sendStatus(403)
+    if (!refreshTokens.includes(refreshToken)) return res.sendStatus(403)
+    jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
+        if (err) return res.sendStatus(403);
+        const accessToken = generateAccessToken({ username: user.username})
         res.json({ accessToken: accessToken})
     })
 })

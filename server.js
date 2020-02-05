@@ -22,23 +22,35 @@ app.get('/posts', authenticateToken, (req, res) => {
 let users = [];
 
 
-app.get('/login', (req, res) => {
-    res.render('login.ejs');
+app.get('/signup', (req, res) => {
+    res.render('signup.ejs');
 })
 
 app.delete('/logout', (req, res) => {
     refreshTokens = refreshTokens.filter(token => token !== req.body.token)
+    res.clearCookie('JWTToken');
     res.sendStatus(204);
 })
 
-app.post('/users/login', async (req, res) => {
+app.post('/login', async (req, res) => {
     const user = users.find(user => user.username === req.body.username);
     if(!user) {
         return res.status(400).send("User doesn't exist");
     }
     try {
-        if( await bcrypt.compare(req.body.password, user.password))
-            res.send("success")
+        if( await bcrypt.compare(req.body.password, user.password)){
+            const username = req.body.username;
+            const userData = { username: username }
+            const accessToken = generateAccessToken(userData);
+            const refreshToken = jwt.sign(userData, process.env.REFRESH_TOKEN_SECRET);
+            refreshTokens.push(refreshToken);
+            const cookieOptions = {
+                httpOnly: true,
+                expires: 0 
+               }
+            res.cookie('JWTToken', refreshToken, cookieOptions)
+            res.json({accessToken: accessToken, refreshToken: refreshToken});
+        }
         else
             res.send("Not Allowed");
     } catch {
@@ -46,9 +58,16 @@ app.post('/users/login', async (req, res) => {
     }
 })
 
-app.post('/login', async (req, res) => {
+app.post('/signup', async (req, res) => {
 
+
+    const userCheck = users.find(user => user.username === req.body.username);
+    if(userCheck) {
+        return res.send("Username already exist");
+    }
+    
     try {
+
         const salt = await bcrypt.genSalt();
         const hashedPassword = await bcrypt.hash(req.body.password, salt)
         console.log(salt)

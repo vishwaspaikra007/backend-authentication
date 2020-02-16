@@ -1,7 +1,16 @@
 
 
-GET http://localhost:3000/posts
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE1ODA4MzMxMjEsImV4cCI6MTU4MDgzMzE0Nn0.QJ0tKxTezLx-v3SYBqpnmUuzBWEKKzsIyyXPBOKdrGo
+POST http://localhost:3000/register
+Content-Type: application/json
+
+{
+    "userId": "93e0acda1581837994095",
+    "firstName": "aamir",
+    "lastName": "khan",
+    "email": "amirkhan12@gmail.com",
+    "password": "qwertyuiop",
+    "post": "hello aamir ! <br> welcome to vishwas Oauth Signin"
+}
 
 ###
 
@@ -9,35 +18,11 @@ POST http://localhost:3000/login
 Content-Type: application/json
 
 {
-    "username": "vishwas",
-    "password": "crazy"
-}
-###
-POST http://localhost:3000/users/login
-Content-Type: application/json
-
-{
-    "username": "vishwas",
-    "password": "crazy"
-}
-
-
-###
-DELETE http://localhost:3000/logout
-Content-Type: application/json
-
-{
-    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiYW1teSIsImlhdCI6MTU4MDcxODM4OH0.5Yufjm0nCk9KlpWJ0vVDeSjnLSEJe7LC5QLayUslo9Q"
+    "email": "amirkhan12@gmail.com",
+    "password": "qwertyuiopa"
 }
 
 ###
-POST http://localhost:3000/token
-Content-Type: application/json
 
-{
-    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InZpc2h3YXMiLCJwYXNzd29yZCI6IiQyYiQxMCRQcy92c2dRY2hXU2Jaay5kOWUzRUxlVThyaXlQR2FDS3NYZGRqV0QxWkw0RExMcGpXV3ZYcSIsImlhdCI6MTU4MDgzMzA4N30.bSjyeDT1fpI82jqIbf5DDtqsQEieZx5eofndgtzfwyM"
-}
-
-###
-GET http://localhost:3000/token
-Content-Type: application/json
+GET http://localhost:3000/getPost
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJmdW5jdGlvbiBzdWIoKSB7IFtuYXRpdmUgY29kZV0gfSIsImlhdCI6MTU4MTc5MTM0OH0.VP77e02GcNbSX3XKEcQY8k4KC1F3YQqZ_IwNsuUUqIU

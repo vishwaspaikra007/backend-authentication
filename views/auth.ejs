@@ -1,0 +1,36 @@
+<html lang="en">
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="google-signin-scope" content="profile email">
+  <meta name="google-signin-client_id"
+    content="135134432913-bijuhf8koi7o7tp74aoq9cgijlhc75co.apps.googleusercontent.com">
+  <script src="https://apis.google.com/js/platform.js" async defer></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.5/angular.min.js"></script>
+  <script src="/js/form.js"></script>
+  <script src="/js/accessToken.js"></script>
+  <link rel="stylesheet" href="/css/buttons.css">
+</head>
+
+<body onload="init()">
+  <div class="vpContainer">
+    <div class="vpFormContainer">
+
+      <div class="forms">
+        <%- include('./partials/login.ejs') %>
+    </div>
+<div class="g-signin2" data-onsuccess="onSignIn" data-theme="dark"></div>
+
+    </div>
+  </div>
+  <div class="signOut">
+
+      <a href="#" onclick="signOut();">Sign out</a>
+      <button class="btnDark" onclick="getPosts()">Get User Info</button>
+      <div id="doc"></div>
+
+  </div>
+</body>
+
+</html>

@@ -1,0 +1,28 @@
+<form onsubmit="formActionRegister(event)">
+    <div class="icon"></div>
+    <input type="text" name="userId" id="userId" hidden value="<%= values['sub'] %>">
+    <label for="firstName">
+        <input type="text" name="firstName" id="firstName" onfocus="moveUp(this)"
+            onblur="moveDown(this)" required value="<%= values['given_name'] %>">
+        <span textBeforeEntry="Enter your First Name" textAfterEntry="First Name">Enter your First Name</span>
+    </label>
+    <label for="lastName">
+        <input type="text" name="lastName" id="lastName" onfocus="moveUp(this)"
+            onblur="moveDown(this)" required value="<%= values['family_name'] %>">
+        <span textBeforeEntry="Enter your Last Name" textAfterEntry="Last Name">Enter your Last Name</span>
+    </label>
+    <label for="email">
+        <input type="email" name="email" id="email" onfocus="moveUp(this)" onblur="moveDown(this)"
+            autofocus required value="<%= values['email'] %>">
+        <span textBeforeEntry="Enter your Email" textAfterEntry="Email">Enter your Email</span>
+    </label>
+    <label for="password">
+        <input type="password" name="password" id="password" onfocus="moveUp(this)" onblur="moveDown(this)"
+            required>
+        <span textBeforeEntry="Enter your Password" textAfterEntry="Password">Enter your Password</span>
+    </label>
+    <input type="submit" class="btnDark" value="Register">
+</form>
+    <div class="others">
+    <a onclick="login()">login</a>
+</div>

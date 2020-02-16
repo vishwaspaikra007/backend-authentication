@@ -1,0 +1,16 @@
+<form onsubmit="formActionLogin(event)">
+    <div class="icon"></div>
+    <label for="email">
+      <input type="email" name="email" id="email" onfocus="moveUp(this)" onblur="moveDown(this)" autofocus required>
+      <span textBeforeEntry="Enter your Email" textAfterEntry="Email">Enter your Email</span>
+    </label>
+    <label for="password">
+      <input type="password" name="password" id="password" onfocus="moveUp(this)" onblur="moveDown(this)"  autofocus required>
+      <span textBeforeEntry="Enter your Password" textAfterEntry="Password">Enter your Password</span>
+    </label>
+    <input type="submit" class="btnDark" value="Login">
+  </form>
+  <hr>
+<div class="others">
+    <a onclick="register()">Register</a>
+</div>

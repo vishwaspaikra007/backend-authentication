@@ -1,19 +1,21 @@
 {
-  "name": "authentication-jwt",
+  "name": "node-server",
   "version": "1.0.0",
-  "description": "authentication with jwt",
-  "main": "index.js",
+  "description": "",
+  "main": "oauthServer.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Vishwas Paikra",
   "license": "ISC",
   "dependencies": {
-    "bcrypt": "^3.0.7",
+    "bcrypt": "^3.0.8",
     "cookie-parser": "^1.4.4",
+    "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "ejs": "^3.0.1",
     "express": "^4.17.1",
+    "google-auth-library": "^5.9.2",
     "jsonwebtoken": "^8.5.1"
   }
 }
